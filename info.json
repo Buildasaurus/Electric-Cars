@@ -1,0 +1,12 @@
+{
+  "name": "[electric-car]",
+  "version": "0.0.0",
+  "title": "[Electric car]",
+  "author": "[Buildasaurus]",
+  "homepage": "[HOMEPAGE/https://github.com/Buildasaurus/Electric-Car]",
+  "description": "[Introduces electric and hybrid cars.]",
+  "factorio_version": "1.1",
+  "dependencies": [
+    "base"
+  ]
+}

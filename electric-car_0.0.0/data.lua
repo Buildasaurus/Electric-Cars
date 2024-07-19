@@ -40,3 +40,46 @@ local recipe = {
 }
 
 data:extend { electricCarItem, recipe, electricCarEntity }
+
+
+
+
+
+-- Electrical concrete
+
+local electricalConcreteItem = table.deepcopy(data.raw["item"]["concrete"])
+local electricalConcreteTile = table.deepcopy(data.raw["tile"]["concrete"]) -- entity version of concrete
+
+electricalConcreteItem.name = "electrical-concrete"
+electricalConcreteItem.icons = {
+    {
+        icon = electricalConcreteItem.icon,
+        icon_size = electricalConcreteItem.icon_size,
+        tint = { r = 0.5, g = 0.5, b = 1.0, a = 0.75 }
+    },
+}
+electricalConcreteItem.place_as_tile = {
+    result = "electrical-concrete",
+    condition_size = 1,
+    condition = { "water-tile" }
+}
+
+electricalConcreteTile.name = "electrical-concrete"
+electricalConcreteTile.minable = { mining_time = 0.1, result = "electrical-concrete" }
+electricalConcreteTile.tint = { r = 0.5, g = 0.5, b = 1.0, a = 0.75 }
+electricalConcreteTile.next_direction = "electrical-concrete"
+electricalConcreteTile.walking_speed_modifier = 1.4
+
+local electricalConcreteRecipe = {
+    type = "recipe",
+    name = "electrical-concrete",
+    enabled = true,
+    ingredients = {
+        { "concrete", 10 },
+        { "copper-cable", 5 }
+    },
+    result = "electrical-concrete",
+    result_count = 10
+}
+
+data:extend { electricalConcreteItem, electricalConcreteTile, electricalConcreteRecipe }

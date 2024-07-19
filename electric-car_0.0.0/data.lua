@@ -1,7 +1,7 @@
 --data.lua
 
 local electricCarItem = table.deepcopy(data.raw["item-with-entity-data"]["car"]) -- copy car item
-local electricCarEntity = table.deepcopy(data.raw["car"]["car"])             -- copy car entitiy
+local electricCarEntity = table.deepcopy(data.raw["car"]["car"])                 -- copy car entitiy
 
 electricCarEntity.name = "electric-car-entity"
 electricCarItem.name = "electric-car"
@@ -14,14 +14,18 @@ electricCarItem.icons = {
 }
 
 electricCarItem.place_result = "electric-car-entity"
-electricCarEntity.minable = { result = "electric-car", mining_time = 0.3}
+electricCarEntity.minable = { result = "electric-car", mining_time = 0.3 }
 
 
 electricCarEntity.effectivity = 6
 
 electricCarEntity.rotation_speed = 0.01
 
-electricCarEntity.energy_source = { type = "void" }
+electricCarEntity.energy_source = {
+    type = "burner",
+    fuel_inventory_size = 0,
+}
+
 
 electricCarEntity.has_belt_immunity = true
 
@@ -35,4 +39,4 @@ local recipe = {
     result = "electric-car"
 }
 
-data:extend { electricCarItem, recipe, electricCarEntity}
+data:extend { electricCarItem, recipe, electricCarEntity }

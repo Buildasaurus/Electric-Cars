@@ -1,14 +1,57 @@
--- Function to initialize car energy when it is created
-local function initializeCarEnergy(event)
-    if event.created_entity and event.created_entity.name == "electric-car-entity" then
-        local car = event.created_entity
-        car.burner.currently_burning = game.item_prototypes["coal"]
-        car.burner.remaining_burning_fuel = 100 * 1e6 -- 100 MJ in joules
+-- Ensure the global table is properly initialized
+local function init_global()
+    if not global.car_energy then
+        global.car_energy = {}
     end
 end
 
--- Function to charge the car when on electrical concrete
-local function chargeCar(car)
+-- Initialize global data when the mod is first loaded
+local function on_init()
+    init_global()
+end
+
+script.on_init(on_init)
+
+-- Handle configuration changes
+local function on_configuration_changed(data)
+    if data and data.mod_changes and data.mod_changes["electric-car"] then
+        init_global() -- Reinitialize the global table if the mod has changed
+    end
+end
+
+script.on_configuration_changed(on_configuration_changed)
+
+
+
+-- Initialize car energy when it is built
+local function on_built_entity(event)
+    local entity = event.created_entity
+    if entity and entity.name == "electric-car-entity" then
+        -- Ensure global is initialized
+        init_global()
+        local carItem = event.stack
+
+        log("electric-car built. item_number was: " .. carItem.item_number)
+
+
+        -- find a way to retrieve the energy energy from the global table
+        local remainingEnergy = global.car_energy[carItem.item_number] or (100 * 1e6) -- Default 100 MJ
+
+        log("Stored energy at " .. carItem.item_number .. " was " .. remainingEnergy)
+
+        entity.burner.currently_burning = game.item_prototypes["coal"]
+        entity.burner.remaining_burning_fuel = remainingEnergy
+    end
+end
+
+script.on_event(defines.events.on_built_entity, on_built_entity)
+
+
+
+
+
+-- Charge the car when on electrical concrete
+local function charge_car(car)
     if car and car.valid and car.name == "electric-car-entity" then
         local position = car.position
         local surface = car.surface
@@ -17,8 +60,8 @@ local function chargeCar(car)
         if tile.name == "electrical-concrete" then
             -- Charge the car if it is on electrical concrete
             if car.burner then
-                local energyToAdd = 1e4 -- 100 KJ per tick
-                car.burner.remaining_burning_fuel = car.burner.remaining_burning_fuel + energyToAdd
+                local energy_to_add = 1e4 -- 100 KJ per tick
+                car.burner.remaining_burning_fuel = car.burner.remaining_burning_fuel + energy_to_add
                 -- Ensure the remaining_burning_fuel does not exceed maximum capacity
                 local max_energy = 1e8 -- 100 MJ
                 car.burner.remaining_burning_fuel = math.min(car.burner.remaining_burning_fuel, max_energy)
@@ -27,12 +70,32 @@ local function chargeCar(car)
     end
 end
 
--- Register the function to initialize car energy when built
-script.on_event(defines.events.on_built_entity, initializeCarEnergy)
-
--- Register the function to charge the car on every tick
 script.on_event(defines.events.on_tick, function(event)
-    for _, car in pairs(game.surfaces[1].find_entities_filtered{type = "car"}) do
-        chargeCar(car)
+    for _, car in pairs(game.surfaces[1].find_entities_filtered { type = "car" }) do
+        charge_car(car)
     end
 end)
+
+
+-- Save car charge when it is mined
+local function on_player_mined_entity(event)
+    local entity = event.entity
+    if entity and entity.name == "electric-car-entity" then
+        -- Save energy data
+        local remainingEnergy = entity.burner and entity.burner.remaining_burning_fuel or 0
+        local electricCarItem = event.buffer.find_item_stack("electric-car")
+
+        -- find a way to store the energy
+        log("electric-car-entity mined. Remaining energy: " .. remainingEnergy)
+        if electricCarItem then
+            global.car_energy[electricCarItem.item_number] = remainingEnergy
+            log("Stored energy at item_number:" .. electricCarItem.item_number)
+        else
+            if player then
+                log("Failed to save energy stored in car. This should not happen")
+            end
+        end
+    end
+end
+
+script.on_event(defines.events.on_player_mined_entity, on_player_mined_entity)

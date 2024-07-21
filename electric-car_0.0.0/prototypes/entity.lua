@@ -2,29 +2,16 @@
 local electricCarEntity = table.deepcopy(data.raw["car"]["car"]) -- Copy car entity
 electricCarEntity.name = "electric-car-entity"
 electricCarEntity.minable = { result = "electric-car", mining_time = 0.3 }
-electricCarEntity.effectivity = 1
-electricCarEntity.consumption = "1000KW"
-electricCarEntity.rotation_speed = 0.01
+electricCarEntity.consumption = "400kW"
 electricCarEntity.braking_power = "500kW"
-
-electricCarEntity.weight = 500
-electricCarEntity.friction = 0.01
-
+electricCarEntity.weight = 700 * 0.8
+electricCarEntity.friction = (2e-3)*3
 electricCarEntity.burner = {
     fuel_category = "electrical",
     effectivity = 1,
-    fuel_inventory_size = 1,
+    fuel_inventory_size = 0,
 }
-
-electricCarEntity.has_belt_immunity = true
-
 data:extend { electricCarEntity }
-
-
-data.raw.car.car.consumption = "10000kW"
-data.raw.car.car.friction = (2e-3)*40
-data.raw.car.car.weight = 700 -- unchanged
-
 
 -- Electrical concrete
 local electricalConcreteTile = table.deepcopy(data.raw["tile"]["concrete"]) -- entity version of concrete

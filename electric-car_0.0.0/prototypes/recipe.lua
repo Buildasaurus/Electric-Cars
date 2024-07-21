@@ -3,7 +3,7 @@ local recipe = {
     name = "electric-car",
     enabled = true,
     energy_required = 0.1, -- time to craft in seconds (at crafting speed 1)
-    ingredients = { { "copper-plate", 200 }, { "steel-plate", 50 } },
+    ingredients = { { "battery", 120 }, { "steel-plate", 60 }, { "electronic-circuit", 10 },  { "electric-engine-unit", 15 } },
     result = "electric-car"
 }
 

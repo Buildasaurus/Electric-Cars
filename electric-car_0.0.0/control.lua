@@ -39,9 +39,9 @@ local function on_built_entity(event)
 
         log("Stored energy at " .. carItem.item_number .. " was " .. remainingEnergy)
 
-        entity.burner.currently_burning = game.item_prototypes["coal"]
+        entity.burner.currently_burning = game.item_prototypes["car-battery"]
         entity.burner.remaining_burning_fuel = remainingEnergy
-        entity.burner.currently_burning = game.item_prototypes["coal"]
+        entity.burner.currently_burning = game.item_prototypes["car-battery"]
     end
 end
 

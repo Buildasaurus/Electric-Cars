@@ -23,6 +23,9 @@ electricCarEntity.has_belt_immunity = true
 data:extend { electricCarEntity }
 
 
+data.raw.car.car.consumption = "10000kW"
+data.raw.car.car.friction = (2e-3)*40
+data.raw.car.car.weight = 700 -- unchanged
 
 
 -- Electrical concrete

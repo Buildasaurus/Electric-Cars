@@ -23,8 +23,8 @@ data:extend { electricCarItem }
 local carBattery = table.deepcopy(data.raw["item"]["rocket-fuel"]) -- Copy rocket-fuel item
 carBattery.name = "car-battery"
 carBattery.fuel_value = "50MJ" -- 50 MJ fuel value
-carBattery.fuel_acceleration_multiplier = 1
-carBattery.fuel_top_speed_multiplier = 1
+carBattery.fuel_acceleration_multiplier = 10
+carBattery.fuel_top_speed_multiplier = nil
 carBattery.fuel_category = "electrical"
 
 data:extend { carBattery }

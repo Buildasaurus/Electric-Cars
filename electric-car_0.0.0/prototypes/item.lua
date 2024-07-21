@@ -1,3 +1,8 @@
+data:extend {{
+    type = "fuel-category",
+    name = "electrical"
+  }}
+
 -- Electric car
 local electricCarItem = table.deepcopy(data.raw["item-with-entity-data"]["car"]) -- copy car item
 
@@ -6,12 +11,23 @@ electricCarItem.icons = {
     {
         icon = electricCarItem.icon,
         icon_size = electricCarItem.icon_size,
-        tint = { r = 0.5, g = 0.5, b = 0.5, a = 0.75 }
+        tint = { r = 0.5, g = 0.5, b = 1, a = 0.75 }
     },
 }
-
 electricCarItem.place_result = "electric-car-entity"
+
 data:extend { electricCarItem }
+
+
+-- Internal car battery
+local carBattery = table.deepcopy(data.raw["item"]["rocket-fuel"]) -- Copy rocket-fuel item
+carBattery.name = "car-battery"
+carBattery.fuel_value = "50MJ" -- 50 MJ fuel value
+carBattery.fuel_acceleration_multiplier = 1
+carBattery.fuel_top_speed_multiplier = 1
+carBattery.fuel_category = "electrical"
+
+data:extend { carBattery }
 
 
 
@@ -32,7 +48,5 @@ electricalConcreteItem.place_as_tile = {
     condition_size = 1,
     condition = { "water-tile" }
 }
-
-
 
 data:extend { electricalConcreteItem }

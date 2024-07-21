@@ -35,17 +35,17 @@ local function on_built_entity(event)
 
 
         -- find a way to retrieve the energy energy from the global table
-        local remainingEnergy = global.car_energy[carItem.item_number] or (100 * 1e6) -- Default 100 MJ
+        local remainingEnergy = global.car_energy[carItem.item_number] or (50 * 1e6) -- Default 50 MJ
 
         log("Stored energy at " .. carItem.item_number .. " was " .. remainingEnergy)
 
         entity.burner.currently_burning = game.item_prototypes["coal"]
         entity.burner.remaining_burning_fuel = remainingEnergy
+        entity.burner.currently_burning = game.item_prototypes["coal"]
     end
 end
 
 script.on_event(defines.events.on_built_entity, on_built_entity)
-
 
 
 
@@ -63,7 +63,7 @@ local function charge_car(car)
                 local energy_to_add = 1e4 -- 100 KJ per tick
                 car.burner.remaining_burning_fuel = car.burner.remaining_burning_fuel + energy_to_add
                 -- Ensure the remaining_burning_fuel does not exceed maximum capacity
-                local max_energy = 1e8 -- 100 MJ
+                local max_energy = 50*1e6 -- 50 MJ
                 car.burner.remaining_burning_fuel = math.min(car.burner.remaining_burning_fuel, max_energy)
             end
         end

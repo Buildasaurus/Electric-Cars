@@ -17,6 +17,7 @@ local electricalConcreteRecipe = {
     type = "recipe",
     name = "electrical-concrete",
     enabled = true,
+    energy_required = 0.1, -- time to craft in seconds (at crafting speed 1)
     ingredients = {
         { "concrete",     10 },
         { "copper-cable", 5 }

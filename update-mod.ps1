@@ -1,6 +1,6 @@
 # Define paths
-$sourceDirectory = "C:\GithubRepositories\Electric-Car\electric-car_0.0.0"
-$zipFilePath = "C:\Users\jonat\AppData\Roaming\Factorio\mods\electric-car_0.0.0.zip"
+$sourceDirectory = "C:\GithubRepositories\Electric-Cars\electric-cars_0.0.0"
+$zipFilePath = "C:\Users\jonat\AppData\Roaming\Factorio\mods\electric-cars_0.0.0.zip"
 $factorioUrlPath = "C:\Users\jonat\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Steam\Factorio.url"
 
 # Function to create or overwrite the zip file with the top-level folder

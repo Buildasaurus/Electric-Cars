@@ -32,7 +32,7 @@ local function on_built_entity(event)
         log("electric-racer built. item_number was: " .. carItem.item_number)
 
         -- find a way to retrieve the energy from the global table
-        local remainingEnergy = global.car_energy[carItem.item_number] or (50 * 1e6) -- Default 50 MJ
+        local remainingEnergy = 0 -- Starts with no energy
 
         log("Stored energy at " .. carItem.item_number .. " was " .. remainingEnergy)
 

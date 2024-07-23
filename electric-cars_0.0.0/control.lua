@@ -24,20 +24,18 @@ script.on_configuration_changed(on_configuration_changed)
 -- Initialize car energy when it is built
 local function on_built_entity(event)
     local entity = event.created_entity
-    if entity and entity.name == "electric-racer-entity" then
+    if entity and entity.burner and entity.burner.fuel_categories["electrical"] then
         -- Ensure global is initialized
         init_global()
         local carItem = event.stack
 
-        log("electric-racer built. item_number was: " .. carItem.item_number)
+        log("electrical car built. item_number was: " .. carItem.item_number)
 
         -- find a way to retrieve the energy from the global table
         local remainingEnergy = 0 -- Starts with no energy
 
         log("Stored energy at " .. carItem.item_number .. " was " .. remainingEnergy)
 
-        entity.burner.currently_burning = game.item_prototypes["car-battery"]
-        entity.burner.remaining_burning_fuel = remainingEnergy
         entity.burner.currently_burning = game.item_prototypes["car-battery"]
     end
 end
@@ -46,23 +44,37 @@ script.on_event(defines.events.on_built_entity, on_built_entity)
 
 -- Charge the car when on electrical concrete
 local function charge_car(car)
-    if car and car.valid and car.name == "electric-racer-entity" then
+    if car and car.valid and car.burner.fuel_categories["electrical"] then
         local position = car.position
         local surface = car.surface
         local tile = surface.get_tile(position)
+        log("Valid electrical car detected")
         if tile.name == "electrical-concrete" then
             -- Find the energy interface at the car's position
             local energy_interface = surface.find_entities_filtered { position = position, name = "electric-concrete-energy-interface" }
-            [1]
+                [1]
+            log("The car is on electrical concrete")
 
             if energy_interface and energy_interface.energy > 0 then
+                log("The concrete has energy")
+
                 -- Charge the car if the energy interface has power
                 if car.burner then
                     local energy_to_add = 1e4 -- 10 KJ per tick
-                    car.burner.remaining_burning_fuel = car.burner.remaining_burning_fuel + energy_to_add
-                    -- Ensure the remaining_burning_fuel does not exceed maximum capacity
-                    local max_energy = 50 * 1e6 -- 50 MJ
-                    car.burner.remaining_burning_fuel = math.min(car.burner.remaining_burning_fuel, max_energy)
+                    local new_heat = car.burner.remaining_burning_fuel + energy_to_add
+
+
+                    if car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat and car.burner.currently_burning.name ~= "car-battery"
+                    then
+                        car.burner.currently_burning = game.item_prototypes["car-battery"]
+                    end
+                    log("The car is burning " .. car.burner.currently_burning.name .. " at heat " .. car.burner.heat)
+                    log("The max heat of the car is " .. car.burner.heat_capacity)
+                    log("The car is about to get" ..
+                        energy_to_add .. "and should be at " .. new_heat)
+
+                    car.burner.remaining_burning_fuel = new_heat
+                    log("The car has a burner and now has fuel " .. car.burner.remaining_burning_fuel)
                 end
             end
         end

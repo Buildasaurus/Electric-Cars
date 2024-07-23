@@ -1,10 +1,10 @@
 local recipe = {
     type = "recipe",
-    name = "electric-car",
+    name = "electric-racer",
     enabled = true,
     energy_required = 0.1, -- time to craft in seconds (at crafting speed 1)
     ingredients = { { "battery", 120 }, { "steel-plate", 60 }, { "electronic-circuit", 10 }, { "electric-engine-unit", 15 } },
-    result = "electric-car"
+    result = "electric-racer"
 }
 
 data:extend { recipe }

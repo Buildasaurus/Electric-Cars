@@ -1,6 +1,6 @@
 local electricCarEntity = table.deepcopy(data.raw["car"]["car"]) -- Copy car entity
-electricCarEntity.name = "electric-car-entity"
-electricCarEntity.minable = { result = "electric-car", mining_time = 0.3 }
+electricCarEntity.name = "electric-racer-entity"
+electricCarEntity.minable = { result = "electric-racer", mining_time = 0.3 }
 electricCarEntity.consumption = "400kW"
 electricCarEntity.braking_power = "500kW"
 electricCarEntity.weight = 700 * 0.8

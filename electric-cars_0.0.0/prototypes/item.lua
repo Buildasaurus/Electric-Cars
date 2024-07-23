@@ -3,10 +3,10 @@ data:extend { {
     name = "electrical"
 } }
 
--- Electric car
+-- Electric Racing Car
 local electricCarItem = table.deepcopy(data.raw["item-with-entity-data"]["car"]) -- copy car item
 
-electricCarItem.name = "electric-car"
+electricCarItem.name = "electric-racer"
 electricCarItem.icons = {
     {
         icon = electricCarItem.icon,
@@ -14,7 +14,7 @@ electricCarItem.icons = {
         tint = { r = 0.5, g = 0.5, b = 1, a = 0.75 }
     },
 }
-electricCarItem.place_result = "electric-car-entity"
+electricCarItem.place_result = "electric-racer-entity"
 
 data:extend { electricCarItem }
 

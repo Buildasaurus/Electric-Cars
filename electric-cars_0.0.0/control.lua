@@ -14,7 +14,7 @@ script.on_init(on_init)
 
 -- Handle configuration changes
 local function on_configuration_changed(data)
-    if data and data.mod_changes and data.mod_changes["electric-car"] then
+    if data and data.mod_changes and data.mod_changes["electric-cars"] then
         init_global() -- Reinitialize the global table if the mod has changed
     end
 end
@@ -24,12 +24,12 @@ script.on_configuration_changed(on_configuration_changed)
 -- Initialize car energy when it is built
 local function on_built_entity(event)
     local entity = event.created_entity
-    if entity and entity.name == "electric-car-entity" then
+    if entity and entity.name == "electric-racer-entity" then
         -- Ensure global is initialized
         init_global()
         local carItem = event.stack
 
-        log("electric-car built. item_number was: " .. carItem.item_number)
+        log("electric-racer built. item_number was: " .. carItem.item_number)
 
         -- find a way to retrieve the energy from the global table
         local remainingEnergy = global.car_energy[carItem.item_number] or (50 * 1e6) -- Default 50 MJ
@@ -46,7 +46,7 @@ script.on_event(defines.events.on_built_entity, on_built_entity)
 
 -- Charge the car when on electrical concrete
 local function charge_car(car)
-    if car and car.valid and car.name == "electric-car-entity" then
+    if car and car.valid and car.name == "electric-racer-entity" then
         local position = car.position
         local surface = car.surface
         local tile = surface.get_tile(position)
@@ -78,13 +78,13 @@ end)
 -- Save car charge when it is mined
 local function on_player_mined_entity(event)
     local entity = event.entity
-    if entity and entity.name == "electric-car-entity" then
+    if entity and entity.name == "electric-racer-entity" then
         -- Save energy data
         local remainingEnergy = entity.burner and entity.burner.remaining_burning_fuel or 0
-        local electricCarItem = event.buffer.find_item_stack("electric-car")
+        local electricCarItem = event.buffer.find_item_stack("electric-racer")
 
         -- find a way to store the energy
-        log("electric-car-entity mined. Remaining energy: " .. remainingEnergy)
+        log("electric-racer-entity mined. Remaining energy: " .. remainingEnergy)
         if electricCarItem then
             global.car_energy[electricCarItem.item_number] = remainingEnergy
             log("Stored energy at item_number:" .. electricCarItem.item_number)

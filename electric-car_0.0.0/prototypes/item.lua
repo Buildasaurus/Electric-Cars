@@ -1,7 +1,7 @@
-data:extend {{
+data:extend { {
     type = "fuel-category",
     name = "electrical"
-  }}
+} }
 
 -- Electric car
 local electricCarItem = table.deepcopy(data.raw["item-with-entity-data"]["car"]) -- copy car item

@@ -52,7 +52,8 @@ local function charge_car(car)
         local tile = surface.get_tile(position)
         if tile.name == "electrical-concrete" then
             -- Find the energy interface at the car's position
-            local energy_interface = surface.find_entities_filtered{position = position, name = "electric-concrete-energy-interface"}[1]
+            local energy_interface = surface.find_entities_filtered { position = position, name = "electric-concrete-energy-interface" }
+            [1]
 
             if energy_interface and energy_interface.energy > 0 then
                 -- Charge the car if the energy interface has power
@@ -60,7 +61,7 @@ local function charge_car(car)
                     local energy_to_add = 1e4 -- 10 KJ per tick
                     car.burner.remaining_burning_fuel = car.burner.remaining_burning_fuel + energy_to_add
                     -- Ensure the remaining_burning_fuel does not exceed maximum capacity
-                    local max_energy = 50*1e6 -- 50 MJ
+                    local max_energy = 50 * 1e6 -- 50 MJ
                     car.burner.remaining_burning_fuel = math.min(car.burner.remaining_burning_fuel, max_energy)
                 end
             end
@@ -100,7 +101,7 @@ script.on_event(defines.events.on_player_mined_entity, on_player_mined_entity)
 -- Warning, if the wrong position is given, several EEI's might be destroyed
 local function destroy_EEI_at_position(position, surface_index)
     local surface = game.surfaces[surface_index]
-    local entities = surface.find_entities_filtered{position = position, name = "electric-concrete-energy-interface", radius = 0.1}
+    local entities = surface.find_entities_filtered { position = position, name = "electric-concrete-energy-interface", radius = 0.1 }
     for _, entity in pairs(entities) do
         entity.destroy()
     end
@@ -119,7 +120,7 @@ local function on_tile_placed(event)
     for _, tile in pairs(event.tiles) do
         if tile.old_tile.name ~= "electrical-concrete" and event.tile.name == "electrical-concrete" then
             local surface = game.surfaces[event.surface_index]
-            surface.create_entity{
+            surface.create_entity {
                 name = "electric-concrete-energy-interface",
                 position = tile.position,
                 force = event.player_index and game.players[event.player_index].force or game.forces.player,

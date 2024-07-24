@@ -55,3 +55,17 @@ local electricalConcreteRecipe = {
 }
 
 data:extend { electricalConcreteRecipe }
+
+
+-- Charging station
+local chargingStationRecipe = {
+    type = "recipe",
+    name = "charging-station",
+    enabled = true,
+    energy_required = 10, -- time to craft in seconds (at crafting speed 1)
+    ingredients = { { "steel-plate", 1 }, { "battery", 1 }, { "electronic-circuit", 1 } },
+    result = "charging-station"
+}
+
+
+data:extend { chargingStationRecipe }

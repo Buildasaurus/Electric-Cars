@@ -70,9 +70,8 @@ data:extend { electricalConcreteItem }
 
 
 
---[[
 -- Electrical charging station
-local chargingStation = table.deepcopy(data.raw["item"]["concrete"])
+local chargingStation = table.deepcopy(data.raw["item"]["accumulator"])
 
 chargingStation.name = "charging-station"
 chargingStation.icons = {
@@ -82,10 +81,7 @@ chargingStation.icons = {
         tint = { r = 0.5, g = 0.5, b = 1.0, a = 0.75 }
     },
 }
-chargingStation.place_as_tile = {
-    result = "electrical-concrete",
-    condition_size = 1,
-    condition = { "water-tile" }
-}
+chargingStation.place_result = "charging-station-entity"
+
+
 data:extend { chargingStation }
-]]

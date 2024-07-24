@@ -74,3 +74,28 @@ local energyInterface = {
 }
 
 data:extend { energyInterface }
+
+-- Charging station
+local chargingStationEntity = table.deepcopy(data.raw["accumulator"]["accumulator"])
+
+chargingStationEntity.name = "charging-station-entity"
+chargingStationEntity.minable = { mining_time = 0.2, result = "charging-station" }
+chargingStationEntity.energy_source = {
+    type = "electric",
+    buffer_capacity = "50MJ",
+    usage_priority = "tertiary",
+    input_flow_limit = "1MW",
+    output_flow_limit = "0W",
+}
+chargingStationEntity.energy_usage = "10KW"
+chargingStationEntity.icons = {
+    {
+        icon = chargingStationEntity.icon,
+        icon_size = chargingStationEntity.icon_size,
+        tint = { r = 0.5, g = 0.5, b = 1.0, a = 0.75 }
+    },
+}
+chargingStationEntity.flags = {"placeable-neutral", "placeable-player", "player-creation"}
+
+
+data:extend { chargingStationEntity }

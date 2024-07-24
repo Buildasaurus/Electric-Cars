@@ -51,24 +51,43 @@ script.on_event(defines.events.on_built_entity, on_built_entity)
 
 -- Charge the car when on electrical concrete
 local function charge_car(car)
-    if car and car.valid and car.burner.fuel_categories["electrical"] then
+    if car and car.valid and car.burner and car.burner.fuel_categories["electrical"] then
         local position = car.position
         local surface = car.surface
         local tile = surface.get_tile(position)
-        if tile.name == "electrical-concrete" then
+        local charging_station_distance = 10
+        local area = {
+            left_top = { x = position.x - charging_station_distance, y = position.y - charging_station_distance },
+            right_bottom = { x = position.x + charging_station_distance, y = position.y + charging_station_distance }
+        }
+
+        -- Check for nearby charging stations
+        local nearbyChargingStations = surface.find_entities_filtered{ area = area, name = "charging-station-entity" }
+        local is_near_charging_station = #nearbyChargingStations > 0
+
+        if is_near_charging_station then
+            if car.burner then
+                local energy_to_add = 200 * 1e3 -- 200 KW per tick
+                local new_heat = car.burner.remaining_burning_fuel + energy_to_add
+
+                -- Set the car's burner to "car-battery" if not already using it
+                if car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat and car.burner.currently_burning.name ~= "car-battery" then
+                    car.burner.currently_burning = game.item_prototypes["car-battery"]
+                end
+
+                car.burner.remaining_burning_fuel = new_heat
+            end
+        elseif tile.name == "electrical-concrete" then
             -- Find the energy interface at the car's position
-            local energy_interface = surface.find_entities_filtered { position = position, name = "electric-concrete-energy-interface" }
-                [1]
+            local energy_interface = surface.find_entities_filtered{ position = position, name = "electric-concrete-energy-interface" }[1]
 
             if energy_interface and energy_interface.energy > 0 then
-                -- Charge the car if the energy interface has power
                 if car.burner then
                     local energy_to_add = 1e4 -- 10 KJ per tick
                     local new_heat = car.burner.remaining_burning_fuel + energy_to_add
 
-
-                    if car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat and car.burner.currently_burning.name ~= "car-battery"
-                    then
+                    -- Set the car's burner to "car-battery" if not already using it
+                    if car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat and car.burner.currently_burning.name ~= "car-battery" then
                         car.burner.currently_burning = game.item_prototypes["car-battery"]
                     end
 
@@ -78,6 +97,7 @@ local function charge_car(car)
         end
     end
 end
+
 
 script.on_event(defines.events.on_tick, function(event)
     init_global()

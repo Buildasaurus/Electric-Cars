@@ -84,7 +84,7 @@ chargingStationEntity.energy_source = {
     type = "electric",
     buffer_capacity = "50MJ",
     usage_priority = "tertiary",
-    input_flow_limit = "1MW",
+    input_flow_limit = "100KW",
     output_flow_limit = "0W",
 }
 chargingStationEntity.energy_usage = "10KW"
@@ -96,6 +96,5 @@ chargingStationEntity.icons = {
     },
 }
 chargingStationEntity.flags = {"placeable-neutral", "placeable-player", "player-creation"}
-
 
 data:extend { chargingStationEntity }

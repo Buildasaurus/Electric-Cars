@@ -97,7 +97,7 @@ end)
 -- Save car charge when it is mined
 local function on_player_mined_entity(event)
     local entity = event.entity
-    if entity and entity.burner.fuel_categories["electrical"] then
+    if entity and entity.burner and entity.burner.fuel_categories["electrical"] then
         -- Save energy data
         local remainingEnergy = entity.burner and entity.burner.remaining_burning_fuel or 0
         local electricCarItem = event.buffer[1]

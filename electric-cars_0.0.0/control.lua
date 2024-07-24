@@ -105,7 +105,7 @@ local function on_player_mined_entity(event)
         -- find a way to store the energy
         log("electric-racer-entity mined. Remaining energy: " .. remainingEnergy)
         if electricCarItem then
-            global.electric_car_entities.remove([electricCarItem.item_number] = nil
+            global.electric_car_entities[electricCarItem.item_number] = nil
 
             global.car_energy[electricCarItem.item_number] = remainingEnergy
             log("Stored energy at item_number:" .. electricCarItem.item_number)

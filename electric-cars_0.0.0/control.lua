@@ -32,11 +32,13 @@ local function on_built_entity(event)
         log("electrical car built. item_number was: " .. carItem.item_number)
 
         -- find a way to retrieve the energy from the global table
-        local remainingEnergy = 0 -- Starts with no energy
+        local remainingEnergy = global.car_energy[carItem.item_number] or 0 -- Starts with no energy or saved energy
 
         log("Stored energy at " .. carItem.item_number .. " was " .. remainingEnergy)
 
         entity.burner.currently_burning = game.item_prototypes["car-battery"]
+        entity.burner.remaining_burning_fuel = remainingEnergy
+
     end
 end
 
@@ -48,15 +50,12 @@ local function charge_car(car)
         local position = car.position
         local surface = car.surface
         local tile = surface.get_tile(position)
-        log("Valid electrical car detected")
         if tile.name == "electrical-concrete" then
             -- Find the energy interface at the car's position
             local energy_interface = surface.find_entities_filtered { position = position, name = "electric-concrete-energy-interface" }
                 [1]
-            log("The car is on electrical concrete")
 
             if energy_interface and energy_interface.energy > 0 then
-                log("The concrete has energy")
 
                 -- Charge the car if the energy interface has power
                 if car.burner then
@@ -68,13 +67,8 @@ local function charge_car(car)
                     then
                         car.burner.currently_burning = game.item_prototypes["car-battery"]
                     end
-                    log("The car is burning " .. car.burner.currently_burning.name .. " at heat " .. car.burner.heat)
-                    log("The max heat of the car is " .. car.burner.heat_capacity)
-                    log("The car is about to get" ..
-                        energy_to_add .. "and should be at " .. new_heat)
 
                     car.burner.remaining_burning_fuel = new_heat
-                    log("The car has a burner and now has fuel " .. car.burner.remaining_burning_fuel)
                 end
             end
         end
@@ -90,10 +84,10 @@ end)
 -- Save car charge when it is mined
 local function on_player_mined_entity(event)
     local entity = event.entity
-    if entity and entity.name == "electric-racer-entity" then
+    if entity and entity.burner.fuel_categories["electrical"] then
         -- Save energy data
         local remainingEnergy = entity.burner and entity.burner.remaining_burning_fuel or 0
-        local electricCarItem = event.buffer.find_item_stack("electric-racer")
+        local electricCarItem = event.buffer[1]
 
         -- find a way to store the energy
         log("electric-racer-entity mined. Remaining energy: " .. remainingEnergy)

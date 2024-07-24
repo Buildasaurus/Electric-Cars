@@ -15,7 +15,6 @@ electricCarItem.icons = {
     },
 }
 electricCarItem.place_result = "electric-racer-entity"
-
 data:extend { electricCarItem }
 
 -- Electric Rover
@@ -30,7 +29,6 @@ electricCarItem.icons = {
     },
 }
 electricCarItem.place_result = "electric-rover-entity"
-
 data:extend { electricCarItem }
 
 
@@ -39,7 +37,6 @@ local carBattery = table.deepcopy(data.raw["item"]["rocket-fuel"]) -- Copy rocke
 carBattery.name = "car-battery"
 carBattery.fuel_value = "50MJ"
 carBattery.fuel_category = "electrical"
-
 data:extend { carBattery }
 
 
@@ -49,7 +46,6 @@ CBattery.name = "c-battery"
 CBattery.stack_size = 100
 CBattery.fuel_value = "50KJ" -- Yes - c-batteries are quite small compared to a car battery
 CBattery.fuel_category = "electrical"
-
 data:extend { CBattery }
 
 
@@ -69,5 +65,27 @@ electricalConcreteItem.place_as_tile = {
     condition_size = 1,
     condition = { "water-tile" }
 }
-
 data:extend { electricalConcreteItem }
+
+
+
+
+--[[
+-- Electrical charging station
+local chargingStation = table.deepcopy(data.raw["item"]["concrete"])
+
+chargingStation.name = "charging-station"
+chargingStation.icons = {
+    {
+        icon = chargingStation.icon,
+        icon_size = chargingStation.icon_size,
+        tint = { r = 0.5, g = 0.5, b = 1.0, a = 0.75 }
+    },
+}
+chargingStation.place_as_tile = {
+    result = "electrical-concrete",
+    condition_size = 1,
+    condition = { "water-tile" }
+}
+data:extend { chargingStation }
+]]

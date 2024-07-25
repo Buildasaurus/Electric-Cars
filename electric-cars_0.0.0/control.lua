@@ -55,14 +55,9 @@ local function charge_car(car)
         local position = car.position
         local surface = car.surface
         local tile = surface.get_tile(position)
-        local charging_station_distance = 10
-        local area = {
-            left_top = { x = position.x - charging_station_distance, y = position.y - charging_station_distance },
-            right_bottom = { x = position.x + charging_station_distance, y = position.y + charging_station_distance }
-        }
 
         -- Check for nearby charging stations
-        local nearbyChargingStations = surface.find_entities_filtered{ area = area, name = "charging-station-entity" }
+        local nearbyChargingStations = surface.find_entities_filtered{position = position, radius = 10, name = "charging-station-entity" }
         local is_near_charging_station = #nearbyChargingStations > 0
 
         if is_near_charging_station then

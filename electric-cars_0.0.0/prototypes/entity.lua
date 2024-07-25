@@ -99,11 +99,11 @@ chargingStationEntity.flags = {"placeable-neutral", "placeable-player", "player-
 chargingStationEntity.radius_visualisation_specification = {
     sprite = {
         filename = "__electric-cars__/graphics/shadow-circle.png",
-        width = 382,
-        height = 382,
+        width = 2048,
+        height = 2048,
         priority = "medium"
     },
     draw_on_selection = true,
-    distance = 30
+    distance = 10
 }
 data:extend { chargingStationEntity }

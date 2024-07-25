@@ -96,5 +96,14 @@ chargingStationEntity.icons = {
     },
 }
 chargingStationEntity.flags = {"placeable-neutral", "placeable-player", "player-creation"}
-
+chargingStationEntity.radius_visualisation_specification = {
+    sprite = {
+        filename = "__electric-cars__/graphics/shadow-circle.png",
+        width = 382,
+        height = 382,
+        priority = "medium"
+    },
+    draw_on_selection = true,
+    distance = 30
+}
 data:extend { chargingStationEntity }

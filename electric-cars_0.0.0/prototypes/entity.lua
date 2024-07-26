@@ -126,11 +126,11 @@ local energyInterface = {
     energy_source = {
         type = "electric",
         usage_priority = "secondary-input",
-        buffer_capacity = "20KJ",
+        buffer_capacity = "40KJ",
         input_flow_limit = "20KW",
         output_flow_limit = "0W",
+        drain = "5KW"
     },
-    energy_usage = "20KW",
     picture = {
         filename = "__base__/graphics/icons/concrete.png",
         priority = "high",
@@ -148,10 +148,11 @@ chargingStationEntity.name = "charging-station-entity"
 chargingStationEntity.minable = { mining_time = 0.2, result = "charging-station" }
 chargingStationEntity.energy_source = {
     type = "electric",
-    buffer_capacity = "50MJ",
+    buffer_capacity = "5MJ",
     usage_priority = "tertiary",
-    input_flow_limit = "100KW",
+    input_flow_limit = "500KW",
     output_flow_limit = "0W",
+    drain = "5KW"
 }
 chargingStationEntity.energy_usage = "10KW"
 chargingStationEntity.icons = {

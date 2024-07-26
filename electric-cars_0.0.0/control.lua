@@ -47,6 +47,15 @@ local function on_built_entity(event)
     end
 end
 
+local function find_near_charged_charging_station_index(nearbyChargingStations)
+    for index, station in ipairs(nearbyChargingStations) do
+        if station.energy > 0 then
+            return index
+        end
+    end
+    return -1 -- No charging station found with energy > 0
+end
+
 script.on_event(defines.events.on_built_entity, on_built_entity)
 
 -- Charge the car when on electrical concrete
@@ -57,21 +66,27 @@ local function charge_car(car)
         local tile = surface.get_tile(position)
 
         -- Check for nearby charging stations
-        local nearbyChargingStations = surface.find_entities_filtered{position = position, radius = 10, name = "charging-station-entity" }
-        local is_near_charging_station = #nearbyChargingStations > 0
+        local nearbyChargingStations = surface.find_entities_filtered { position = position, radius = 10, name = "charging-station-entity" }
+        -- store the index of the first near charging station that has more than 0 energy 0, else -1
+        local near_charged_charging_station_index = find_near_charged_charging_station_index(nearbyChargingStations)
 
-        if is_near_charging_station then
-            if car.burner then
-                local energy_to_add = 200 * 1e3 -- 200 KW per tick
-                local new_heat = car.burner.remaining_burning_fuel + energy_to_add
 
-                -- Set the car's burner to "car-battery" if not already using it
-                if car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat and car.burner.currently_burning.name ~= "car-battery" then
-                    car.burner.currently_burning = game.item_prototypes["car-battery"]
-                end
+        if near_charged_charging_station_index ~= -1 then
+            local energy_to_add = 600 * 1e3 / 60               -- 600 KJ per second (60 ticks pr second)
+            local newHeat = 0
+            local charging_station = nearbyChargingStations[near_charged_charging_station_index] -- Assume using the first found station
 
-                car.burner.remaining_burning_fuel = new_heat
+            if charging_station.energy >= energy_to_add then
+                charging_station.energy = charging_station.energy - energy_to_add
+                newHeat = car.burner.remaining_burning_fuel + energy_to_add
+            elseif charging_station.energy > 0 then
+                newHeat = car.burner.remaining_burning_fuel + charging_station.energy
+                charging_station.energy = 0
             end
+            if (car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < newHeat) and car.burner.currently_burning.name ~= "car-battery" then
+                car.burner.currently_burning = game.item_prototypes["car-battery"]
+            end
+            car.burner.remaining_burning_fuel = newHeat
         elseif tile.name == "electrical-concrete" then
             -- Find the energy interface at the car's position
             local energy_interface = surface.find_entities_filtered{ position = position, name = "electric-concrete-energy-interface" }[1]

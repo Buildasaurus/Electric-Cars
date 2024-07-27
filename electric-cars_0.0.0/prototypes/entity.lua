@@ -30,9 +30,9 @@ electricRoverEntity.burner = {
 }
 electricRoverEntity.animation = {
     animation_speed = 8,
-    direction_count = 1,
+    direction_count = 64,
     frame_count = 1,
-    height = 170,
+    height = 175,
     max_advance = 0.2,
     priority = "low",
     shift = {
@@ -42,9 +42,9 @@ electricRoverEntity.animation = {
     scale = 0.5,
     stripes = {
         {
-            filename = "__electric-cars__/graphics/electric-racer.png",
-            height_in_frames = 1,
-            width_in_frames = 1
+            filename = "__electric-cars__/graphics/sprite_sheet.png",
+            height_in_frames = 8,
+            width_in_frames = 8
         }
     },
     width = 200

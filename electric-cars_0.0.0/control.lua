@@ -83,7 +83,7 @@ local function charge_car(car)
                 newHeat = car.burner.remaining_burning_fuel + charging_station.energy
                 charging_station.energy = 0
             end
-            if (car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < newHeat) and car.burner.currently_burning.name ~= "car-battery" then
+            if (car.burner.currently_burning == nil or car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < newHeat) and car.burner.currently_burning.name ~= "car-battery" then
                 car.burner.currently_burning = game.item_prototypes["car-battery"]
             end
             car.burner.remaining_burning_fuel = newHeat
@@ -97,7 +97,7 @@ local function charge_car(car)
                     local new_heat = car.burner.remaining_burning_fuel + energy_to_add
 
                     -- Set the car's burner to "car-battery" if not already using it
-                    if car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat and car.burner.currently_burning.name ~= "car-battery" then
+                    if (car.burner.currently_burning == nil or car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat) and car.burner.currently_burning.name ~= "car-battery" then
                         car.burner.currently_burning = game.item_prototypes["car-battery"]
                     end
 

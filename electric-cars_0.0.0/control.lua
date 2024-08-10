@@ -111,32 +111,56 @@ end
 
 script.on_event(defines.events.on_tick, function(event)
     init_global()
+    cleanup = false
     if global.electric_car_entities then
         for _, car in pairs(global.electric_car_entities) do
             if car ~= nil and car.valid then
                 log(car["name"])
                 charge_car(car)
             else
+                cleanup = true
                 log("WARNING - nil car saved")
             end
+        end
+    end
+
+    if cleanup then
+        log("Initializing cleanup of invalid entries.")
+        -- Cleanup invalid entries in the electric_car_entities table
+        local valid_cars = {}
+        local has_invalid_cars = false
+        log("removing cars")
+        for key, car in pairs(global.electric_car_entities) do
+            if car ~= nil and car.valid then
+                log("this car is valid:")
+                log(car["name"])
+                log(key)
+                table.insert(valid_cars, car)  -- Keep valid cars
+            else
+                has_invalid_cars = true  -- Mark if invalid car is found
+            end
+        end
+
+        if has_invalid_cars then
+            global.electric_car_entities = valid_cars  -- Update the global table
+            log("Invalid cars removed from the list.")
         end
     end
 end)
 
 
 -- Save car charge when it is mined
-local function on_player_mined_entity(event)
+function on_player_mined_entity(event)
     local entity = event.entity
     if entity and entity.burner and entity.burner.fuel_categories["electrical"] then
         -- Save energy data
         local remainingEnergy = entity.burner and entity.burner.remaining_burning_fuel or 0
         local electricCarItem = event.buffer[1]
 
-        -- find a way to store the energy
+        -- Log the mining event and energy
         log("electric-racer-entity mined. Remaining energy: " .. remainingEnergy)
         if electricCarItem then
             global.electric_car_entities[electricCarItem.item_number] = nil
-
             global.car_energy[electricCarItem.item_number] = remainingEnergy
             log("Stored energy at item_number:" .. electricCarItem.item_number)
         else
@@ -146,6 +170,7 @@ local function on_player_mined_entity(event)
         end
     end
 end
+
 
 script.on_event(defines.events.on_player_mined_entity, on_player_mined_entity)
 

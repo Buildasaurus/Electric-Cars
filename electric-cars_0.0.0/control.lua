@@ -70,7 +70,7 @@ local function charge_car(car)
         -- store the index of the first near charging station that has more than 0 energy 0, else -1
         local near_charged_charging_station_index = find_near_charged_charging_station_index(nearbyChargingStations)
 
-
+        -- Charging station charging is prioritized over concrete
         if near_charged_charging_station_index ~= -1 then
             local energy_to_add = 600 * 1e3 / 60               -- 600 KJ per second (60 ticks pr second)
             local newHeat = 0
@@ -88,20 +88,21 @@ local function charge_car(car)
             end
             car.burner.remaining_burning_fuel = newHeat
         elseif tile.name == "electrical-concrete" then
-            -- Find the energy interface at the car's position
+            -- If there is no charging station, try to use the energy interface at the car's position (electrical concrete)
             local energy_interface = surface.find_entities_filtered{ position = position, name = "electric-concrete-energy-interface" }[1]
 
             if energy_interface and energy_interface.energy > 0 then
                 if car.burner then
-                    local energy_to_add = 1e4 -- 10 KJ per tick
+                    local energy_to_add = energy_interface.energy -- everything stored in the buffer_capacity of the concrete.
                     local new_heat = car.burner.remaining_burning_fuel + energy_to_add
 
                     -- Set the car's burner to "car-battery" if not already using it
                     if (car.burner.currently_burning == nil or car.burner.remaining_burning_fuel == 0 or car.burner.currently_burning.fuel_value < new_heat) and car.burner.currently_burning.name ~= "car-battery" then
                         car.burner.currently_burning = game.item_prototypes["car-battery"]
                     end
-
+                    -- This will automatically be clamped to the correct range
                     car.burner.remaining_burning_fuel = new_heat
+                    energy_interface.energy = 0
                 end
             end
         end

@@ -126,10 +126,10 @@ local energyInterface = {
     energy_source = {
         type = "electric",
         usage_priority = "secondary-input",
-        buffer_capacity = "40KJ",
-        input_flow_limit = "20KW",
+        buffer_capacity = "0.1666KJ", --10 / 60, because we want it to be filled every tick, and provide 10 kw.
+        input_flow_limit = "10KW",
         output_flow_limit = "0W",
-        drain = "5KW"
+        drain = "2KW"
     },
     picture = {
         filename = "__base__/graphics/icons/concrete.png",

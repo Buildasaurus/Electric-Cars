@@ -142,35 +142,40 @@ local energyInterface = {
 data:extend { energyInterface }
 
 -- Charging station
-local chargingStationEntity = table.deepcopy(data.raw["accumulator"]["accumulator"])
+-- Define the charging station entity
+local chargingStationEntity = {
+    type = "electric-energy-interface",
+    name = "charging-station-entity",
+    icon = "__base__/graphics/icons/accumulator.png",
+    icon_size = 32,
+    flags = { "placeable-neutral", "placeable-player", "player-creation" },
+    selectable_in_game = true, -- Allow selection in game
+    minable = { mining_time = 0.2, result = "charging-station" },
+    collision_box = table.deepcopy(data.raw["accumulator"]["accumulator"].collision_box),
+    selection_box = { { -1, -1 }, { 1, 1 } },  -- Large selection box
+    collision_mask = { "object-layer", "player-layer" }, -- Ensure it is visible but not clickable
 
-chargingStationEntity.name = "charging-station-entity"
-chargingStationEntity.minable = { mining_time = 0.2, result = "charging-station" }
-chargingStationEntity.energy_source = {
-    type = "electric",
-    buffer_capacity = "5MJ",
-    usage_priority = "tertiary",
-    input_flow_limit = "500KW",
-    output_flow_limit = "0W",
-    drain = "5KW"
-}
-chargingStationEntity.energy_usage = "10KW"
-chargingStationEntity.icons = {
-    {
-        icon = chargingStationEntity.icon,
-        icon_size = chargingStationEntity.icon_size,
-        tint = { r = 0.5, g = 0.5, b = 1.0, a = 0.75 }
+    energy_source = {
+        type = "electric",
+        buffer_capacity = "5MJ",
+        usage_priority = "tertiary",
+        input_flow_limit = "500KW",
+        output_flow_limit = "0W",
+        drain = "5KW"
+    },
+    energy_production = "0W",
+    energy_usage = "10KW",
+    picture = table.deepcopy(data.raw["accumulator"]["accumulator"].picture),
+    radius_visualisation_specification = {
+        sprite = {
+            filename = "__electric-cars__/graphics/shadow-circle.png",
+            width = 2048,
+            height = 2048,
+            priority = "medium"
+        },
+        draw_on_selection = true,
+        distance = 10
     },
 }
-chargingStationEntity.flags = { "placeable-neutral", "placeable-player", "player-creation" }
-chargingStationEntity.radius_visualisation_specification = {
-    sprite = {
-        filename = "__electric-cars__/graphics/shadow-circle.png",
-        width = 2048,
-        height = 2048,
-        priority = "medium"
-    },
-    draw_on_selection = true,
-    distance = 10
-}
+
 data:extend { chargingStationEntity }

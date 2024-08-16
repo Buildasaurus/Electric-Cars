@@ -52,14 +52,14 @@ data:extend { CBattery }
 
 
 -- D- battery
-local CBattery = table.deepcopy(data.raw["item"]["rocket-fuel"])
-CBattery.name = "d-battery"
-CBattery.stack_size = 100
-CBattery.fuel_value = "140KJ" -- Yes - d-batteries are also quite small compared to a car battery
-CBattery.fuel_category = "electrical"
-CBattery.icon = "__electric-cars__/graphics/d-battery.png"
-CBattery.icon_size = 384
-data:extend { CBattery }
+local DBattery = table.deepcopy(data.raw["item"]["rocket-fuel"])
+DBattery.name = "d-battery"
+DBattery.stack_size = 100
+DBattery.fuel_value = "140KJ" -- Yes - d-batteries are also quite small compared to a car battery
+DBattery.fuel_category = "electrical"
+DBattery.icon = "__electric-cars__/graphics/d-battery.png"
+DBattery.icon_size = 384
+data:extend { DBattery }
 
 
 -- Electrical concrete

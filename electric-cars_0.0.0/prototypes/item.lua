@@ -46,6 +46,8 @@ CBattery.name = "c-battery"
 CBattery.stack_size = 100
 CBattery.fuel_value = "50KJ" -- Yes - c-batteries are quite small compared to a car battery
 CBattery.fuel_category = "electrical"
+CBattery.icon = "__electric-cars__/graphics/c-battery.png"
+CBattery.icon_size = 384
 data:extend { CBattery }
 
 

@@ -112,11 +112,10 @@ end
 
 script.on_event(defines.events.on_tick, function(event)
     init_global()
-    cleanup = false
+    local cleanup = false
     if global.electric_car_entities then
         for _, car in pairs(global.electric_car_entities) do
             if car ~= nil and car.valid then
-                log(car["name"])
                 charge_car(car)
             else
                 cleanup = true

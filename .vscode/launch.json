@@ -7,13 +7,13 @@
     "configurations": [
         {
             "type": "factoriomod",
-            "modsPath": "C:/GithubRepositories/Electric-Cars",
+            "modsPath": "G:/GithubRepositories/Electric-Cars",
             "request": "launch",
             "name": "Factorio Mod Debug"
         },
         {
             "type": "factoriomod",
-            "modsPath": "C:/GithubRepositories/Electric-Cars",
+            "modsPath": "G:/GithubRepositories/Electric-Cars",
             "request": "launch",
             "name": "Factorio Mod Debug (Settings & Data)",
             "hookSettings": true,
@@ -21,7 +21,7 @@
         },
         {
             "type": "factoriomod",
-            "modsPath": "C:/GithubRepositories/Electric-Cars",
+            "modsPath": "G:/GithubRepositories/Electric-Cars",
             "request": "launch",
             "name": "Factorio Mod Debug (Profile)",
             "hookMode": "profile"
